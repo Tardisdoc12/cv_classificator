@@ -18,14 +18,22 @@ threshold_allowed = 0.9
 
 ################################################################################
 
-def update_model_ema(model, ema_model, alpha=0.9999):
+def update_model_ema(
+    model : torch.nn.Module,
+    ema_model : torch.nn.Module,
+    alpha : int = 0.9999
+):
     for param, ema_param in zip(model.parameters(), ema_model.parameters()):
         ema_param.data.mul_(alpha).add_(1 - alpha, param.data)
 
 ################################################################################
 
 @torch.no_grad()
-def evaluate_model(model, dataloader_validation, device="gpu"):
+def evaluate_model(
+    model : torch.nn.Module,
+    dataloader_validation : torch.utils.data.DataLoader,
+    device : torch.device = "gpu"
+):
     model.eval()
     total = 0
     correct = 0
@@ -42,7 +50,13 @@ def evaluate_model(model, dataloader_validation, device="gpu"):
 
 ################################################################################
 
-def validation_epoch(epoch, model, config: ConfigTraining, dataloader_val, device):
+def validation_epoch(
+    epoch : int, 
+    model : torch.nn.Module,
+    config: ConfigTraining,
+    dataloader_val : torch.utils.data.DataLoader,
+    device : torch.device
+):
     stop = False
     if epoch % config.interval_valid == 0:
         accuracy = evaluate_model(model, dataloader_val, device)
@@ -56,7 +70,15 @@ def validation_epoch(epoch, model, config: ConfigTraining, dataloader_val, devic
 
 ################################################################################
 
-def training_epoch(model, ema_model, config: ConfigTraining, dataloader_train, optimizer, scheduler, device):
+def training_epoch(
+    model : torch.nn.Module,
+    ema_model: torch.nn.Module,
+    config: ConfigTraining,
+    dataloader_train : torch.utils.data.DataLoader,
+    optimizer : torch.optim.Optimizer,
+    scheduler : torch.optim.lr_scheduler.ReduceLROnPlateau,
+    device : torch.device
+):
     total = 0
     correct = 0
     for batch in dataloader_train:
@@ -113,7 +135,11 @@ def training_loop(
 
 ################################################################################
 
-def evaluate_model(model, dataloader_test, device=("cuda" if torch.cuda.is_available() else "cpu")):
+def evaluate_model(
+    model : torch.nn.Module,
+    dataloader_test : torch.utils.data.DataLoader,
+    device : torch.device = ("cuda" if torch.cuda.is_available() else "cpu")
+):
     if isinstance(device, str):
         device = torch.device(device)
     model.to(device)

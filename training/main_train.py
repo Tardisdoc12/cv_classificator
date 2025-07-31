@@ -53,12 +53,10 @@ def main():
         datas_dict = {}
         with open(config.datas_path, "r") as f:
             datas_dict = yaml.safe_load(f)
-        datas_dict = datas_dict["datas_dict"]
     else:
         datas_dict = {}
         with open(args.datas_path, "r") as f:
             datas_dict = yaml.safe_load(f)
-        datas_dict = datas_dict["datas_dict"]
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="max", patience=3, factor=0.5)
         model = ClassificatorCVTransformer(args.model).to(device)

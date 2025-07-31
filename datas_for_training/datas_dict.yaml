@@ -1,11 +1,9 @@
-datas_dict: {
-    "train": [
-        {"tag":"","cv_path":"", "scoring": 0},
-    ],
-    "validation": [
+"train": [
+    # example : {"tag":"AI","cv_path":"to/your/cv.pdf", "scoring": 3.2},
+]
+"validation": [
 
-    ],
-    "test": [
+]
+"test": [
 
-    ]
-}
+]
