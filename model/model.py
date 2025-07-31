@@ -12,7 +12,6 @@ from transformers import AutoModel
 ################################################################################
 #CONSTANTS
 
-input_size_mlp = 768
 hidden_size_mlp = 256
 output_size_mlp = 1
 
@@ -22,6 +21,7 @@ class ClassificatorCVTransformer(nn.Module):
     def __init__(self, type="prajjwal1/bert-tiny"):
         super().__init__()
         self.bert = AutoModel.from_pretrained(type)
+        input_size_mlp = self.bert.config.hidden_size
         self.mlp = nn.Sequential(
             nn.Linear(input_size_mlp, hidden_size_mlp),
             nn.ReLU(),
